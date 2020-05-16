@@ -1,3 +1,8 @@
+---
+title: 'Minimum Subset Sum Difference'
+date: 2020-05-16
+---
+
 ## Problem Statement
 
 Given a set of positive numbers, partition the set into two subsets with a minimum difference between their subset sums.

@@ -1,3 +1,8 @@
+---
+title: '0-1 Knapsack'
+date: 2020-05-16
+---
+
 ## Introduction
 
 Given the weights and profits of 'N' items, we are asked to put these items in a knapsack which has a capacity 'C'. The goal is to get the maximum profit from the items in the knapsack. Each item can only be selected once, as we don't have multiple quantities of any item.
@@ -7,14 +12,14 @@ Let's take an example of Merry, who wants to carry some fruits in the knapsack t
 **Items**: { Apple, Orange, Banana, Melon }  
 **Weights**: { 2, 3, 1, 4 }  
 **Profits**: { 4, 5, 3, 7 }  
-**Knapsack Capacity**: 5  
+**Knapsack Capacity**: 5
 
 Let's try to put different combinations of fruit in the knapsack, such that their total weights is not more than 5:
 
 Apple + Orange (total weight 5) => 9 profit  
 Apple + Banana (total weight 3) => 7 profit  
 Orange + Banana (total weight 4) => 8 profit  
-Banana + Melon (total weight 5) => 10 profit  
+Banana + Melon (total weight 5) => 10 profit
 
 This shows that **Banana + Melon** is the best combination, as it gives us the maximum profit and the total weight does not exceed the capacity.
 
@@ -28,7 +33,7 @@ A basic brute-force solution could be to try all combinations of the given items
 
 ```js
 for each item 'i':
-    create a new set which INCLUDES item 'i' if the total weight does not exceed the capacity,  
+    create a new set which INCLUDES item 'i' if the total weight does not exceed the capacity,
     and recursively process the remaining capacity and items
 
     create a new set WITHOUT item 'i', and recursively process the remaining items
@@ -40,7 +45,7 @@ return the set from the above two sets with higher profit
 
 Here is a visual representation of our algorithm:
 
-![alt text](https://imgur.com/i2RJHfV.png "Knapsack recursive")
+![alt text](https://imgur.com/i2RJHfV.png 'Knapsack recursive')
 
 All green boxes have a total weight that is less than or equal to the capacity (7), and all the red ones have a weight more than 7. The best solution we have is with items [B,D] having a total profit of 22 and a total weight of 7.
 
@@ -145,8 +150,8 @@ Let's try to populate `dp[][]` array from the above solution, working in a botto
 
 So, for each item at index 'i' (0 <= i < items.length) and capacity c (0 <= c < capacity), we have two options:
 
- - Exclude the item at index 'i'. In this case, we will tak whatever profit we get from the subarray excluding this item => `dp[i-1][c]`.
- - Include tthe item at index 'i' if it's weight is not more than the capacity. In this case, we include it's profit plus whatever profit we get from the remaining capacity and from remaining items => `profit[i] + dp[i-1][c-weight[i]]`
+-   Exclude the item at index 'i'. In this case, we will tak whatever profit we get from the subarray excluding this item => `dp[i-1][c]`.
+-   Include tthe item at index 'i' if it's weight is not more than the capacity. In this case, we include it's profit plus whatever profit we get from the remaining capacity and from remaining items => `profit[i] + dp[i-1][c-weight[i]]`
 
 Finally, our optimal solution will be the maximum of above two values.
 
@@ -154,23 +159,23 @@ Finally, our optimal solution will be the maximum of above two values.
 
 Let’s visually draw this and start with our base case of zero capacity:
 
-![alt text](https://imgur.com/lGbQtLD.png "Knapsack Bottom up zero capacity")
+![alt text](https://imgur.com/lGbQtLD.png 'Knapsack Bottom up zero capacity')
 
 If we consider the subarray till index 0, we only have one item to put in. We will take it if it is not more than the capacity.
 
-![alt text](https://imgur.com/ImzXLXm.png "Knapsack Bottom up 0 index")
+![alt text](https://imgur.com/ImzXLXm.png 'Knapsack Bottom up 0 index')
 
 At capacity=1 and index=1, since the item at index=1 has weight 2, which is greater than the capacity, we will take `dp[index-1][capacity]`
 
-![alt text](https://imgur.com/YZjbZXj.png "Knapsack Bottom up first element")
+![alt text](https://imgur.com/YZjbZXj.png 'Knapsack Bottom up first element')
 
 Next, we fill up the table using the formula above: `max(dp[0][2], profits[1] + dp[0][0])`
 
-![alt text](https://imgur.com/HT1phIB.png "Knapsack Bottom up first element")
+![alt text](https://imgur.com/HT1phIB.png 'Knapsack Bottom up first element')
 
 The complete table:
 
-![alt text](https://imgur.com/jMj8x1r.png "Knapsack Bottom up first element")
+![alt text](https://imgur.com/jMj8x1r.png 'Knapsack Bottom up first element')
 
 <div class="page" />
 
@@ -229,7 +234,7 @@ As you remember, at every step we had two options: include an item or skip it. I
 
 Let's understand this from the above example:
 
-![alt text](https://imgur.com/LOcujf2.png "Knapsack Bottom up select items")
+![alt text](https://imgur.com/LOcujf2.png 'Knapsack Bottom up select items')
 
 1. ‘22’ did not come from the top cell (which is 17); hence we must include the item at index ‘3’ (which is the item ‘D’).
 2. Subtract the profit of item ‘D’ from ‘22’ to get the remaining profit ‘6’. We then jump to profit ‘6’ on the same row.
@@ -309,38 +314,38 @@ console.log(`Total knapsack profit: ---> ${solveKnapsack(profits, weights, 6)}`)
 Can we further improve our bottom-up DP solution? Can we find an algorithm that has O(C) space complexity?
 
 ```js
-let solveKnapsack = function(profits, weights, capacity) {
-  const n = profits.length;
-  if (capacity <= 0 || n == 0 || weights.length != n) return 0;
+let solveKnapsack = function (profits, weights, capacity) {
+    const n = profits.length;
+    if (capacity <= 0 || n == 0 || weights.length != n) return 0;
 
-  // we only need one previous row to find the optimal solution, overall we need '2' rows
-  // the above solution is similar to the previous solution, the only difference is that 
-  // we use `i%2` instead if `i` and `(i-1)%2` instead if `i-1`
-  const dp = Array(2)
-    .fill(0)
-    .map(() => Array(capacity + 1).fill(0));
+    // we only need one previous row to find the optimal solution, overall we need '2' rows
+    // the above solution is similar to the previous solution, the only difference is that
+    // we use `i%2` instead if `i` and `(i-1)%2` instead if `i-1`
+    const dp = Array(2)
+        .fill(0)
+        .map(() => Array(capacity + 1).fill(0));
 
-  // if we have only one weight, we will take it if it is not more than the capacity
-  for (let c = 0; c <= capacity; c++) {
-    if (weights[0] <= c) dp[0][c] = dp[1][c] = profits[0];
-  }
-
-  // process all sub-arrays for all the capacities
-  for (let i = 1; i < n; i++) {
-    for (let c = 1; c <= capacity; c++) {
-      let profit1 = 0,
-        profit2 = 0;
-      // include the item, if it is not more than the capacity
-      if (weights[i] <= c) profit1 = profits[i] + dp[(i - 1) % 2][c - weights[i]];
-      // exclude the item
-      profit2 = dp[(i - 1) % 2][c];
-      // take maximum
-      dp[i % 2][c] = Math.max(profit1, profit2);
+    // if we have only one weight, we will take it if it is not more than the capacity
+    for (let c = 0; c <= capacity; c++) {
+        if (weights[0] <= c) dp[0][c] = dp[1][c] = profits[0];
     }
-  }
 
-  // maximum profit will be at the bottom-right corner.
-  return dp[(n - 1) % 2][capacity];
+    // process all sub-arrays for all the capacities
+    for (let i = 1; i < n; i++) {
+        for (let c = 1; c <= capacity; c++) {
+            let profit1 = 0,
+                profit2 = 0;
+            // include the item, if it is not more than the capacity
+            if (weights[i] <= c) profit1 = profits[i] + dp[(i - 1) % 2][c - weights[i]];
+            // exclude the item
+            profit2 = dp[(i - 1) % 2][c];
+            // take maximum
+            dp[i % 2][c] = Math.max(profit1, profit2);
+        }
+    }
+
+    // maximum profit will be at the bottom-right corner.
+    return dp[(n - 1) % 2][capacity];
 };
 
 var profits = [1, 6, 10, 16];
@@ -356,6 +361,7 @@ This space optimization solution can also be implemented using a single array. I
 If you see closely, we need two values from the previous iteration: `dp[c]` and `dp[c-weight[i]]`
 
 Since our inner loop is iterating over `c:0-->capacity`, let’s see how this might affect our two required values:
+
 1. When we access `dp[c]`, it has not been overridden yet for the current iteration, so it should be fine.
 2. `dp[c-weight[i]]` might be overridden if “`weight[i]` > 0”. Therefore we can’t use this value for the current iteration.
 

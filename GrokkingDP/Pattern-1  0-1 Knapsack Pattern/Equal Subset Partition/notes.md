@@ -1,3 +1,8 @@
+---
+title: 'Equal Subset Sum Partition'
+date: 2020-05-16
+---
+
 ## Equal Subset Sum Partition
 
 ### Problem Statement
